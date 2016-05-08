@@ -1,3 +1,5 @@
+require 'weather'
+
 class Airport
   DEFAULT_CAPACITY = 25
 
@@ -27,7 +29,7 @@ class Airport
   end
 
   def stormy?
-    rand(0..100) > 95
+    Weather.stormy?
   end
 
   def wrong_airport?(plane)
