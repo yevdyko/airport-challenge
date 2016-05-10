@@ -10,25 +10,35 @@ describe Plane do
       expect(plane.airport).to eq airport
     end
 
-    it 'raises an error if already landed' do
-      plane.land(airport)
-      expect { plane.land(airport) }.to raise_error 'Plane cannot land. Plane already landed!'
+    context 'if already landed' do
+      it 'raises an error' do
+        plane.land(airport)
+        expect { plane.land(airport) }.to raise_error 'Plane cannot land. Plane already landed!'
+      end
     end
   end
 
   describe '#take_off' do
-    it { is_expected.to respond_to :take_off }
+    it 'can take off' do
+      expect(plane).to respond_to :take_off
+    end
 
-    it 'raises an error if already flying' do
-      expect { plane.take_off }.to raise_error 'Plane cannot take off. Plane already flying!'
+    context 'if already flying' do
+      it 'raises an error' do
+        expect { plane.take_off }.to raise_error 'Plane cannot take off. Plane already flying!'
+      end
     end
   end
 
   describe '#airport' do
-    it { is_expected.to respond_to :airport }
+    it 'can be at an airport' do
+      expect(plane).to respond_to :airport
+    end
 
-    it 'raises an error if already flying' do
-      expect { plane.airport }.to raise_error 'Plane cannot be at an airport. Plane already flying!'
+    context 'if already flying' do
+      it 'raises an error' do
+        expect { plane.airport }.to raise_error 'Plane cannot be at an airport. Plane already flying!'
+      end
     end
   end
 end
