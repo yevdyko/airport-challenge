@@ -20,7 +20,7 @@ class Airport
   def take_off(plane)
     raise 'Plane cannot take off. Weather is stormy!' if stormy?
     raise 'Plane cannot take off. Wrong airport!' unless wrong_airport?(plane)
-    @planes.delete(plane)
+    plane
   end
 
   private
