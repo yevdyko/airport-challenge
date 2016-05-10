@@ -1,4 +1,4 @@
-Airport Challenge
+Airport Challenge [![Build Status](https://travis-ci.org/yevdyko/airport-challenge.svg?branch=master)](https://travis-ci.org/yevdyko/airport-challenge)  [![Coverage Status](https://coveralls.io/repos/github/yevdyko/airport-challenge/badge.svg?branch=master)](https://coveralls.io/github/yevdyko/airport-challenge?branch=master)  [![Code Climate](https://codeclimate.com/github/yevdyko/airport-challenge/badges/gpa.svg)](https://codeclimate.com/github/yevdyko/airport-challenge)
 =================
 
 ```
@@ -13,21 +13,10 @@ Airport Challenge
 
 ```
 
-Instructions
----------
-
-
-Installation
-------------
-
-1. Clone this repo
-2. Run the command `gem install bundle` (if you don't have bundle already)
-3. When the installation completes, run `bundle`
-
-Task
------
-
 We have a request from a client to write the software to control the flow of planes at an airport. The planes can land and take off provided that the weather is sunny. Occasionally it may be stormy, in which case no planes can land or take off.  Here are the user stories that we worked out in collaboration with the client:
+
+User Stories
+------------
 
 ```
 As an air traffic controller
@@ -67,14 +56,42 @@ So the system is consistent and correctly reports plane status and location
 I want to ensure a plane that has taken off from an airport is no longer in that airport
 ```
 
-Your task is to test drive the creation of a set of classes/modules to satisfy all the above user stories. You will need to use a random number generator to set the weather (it is normally sunny but on rare occasions it may be stormy). In your tests, you'll need to use a stub to override random weather to ensure consistent test behaviour.
+Here is User Stories converted into a Domain Model
 
-For overriding random weather behaviour, please read the documentation to learn how to use test doubles: https://www.relishapp.com/rspec/rspec-mocks/docs . There’s an example of using a test double to test a die that’s relevant to testing random weather in the test.
+|Object  |      Messages      |
+|--------|--------------------|
+|airport |      land          |
+|        |      take_off      |
+|plane   |      land          |
+|        |      take_off      |
+|        |      airport       |
+|weather |      stormy?       |
 
-Please create separate files for every class, module and test suite.
+Installation
+------------
 
-The submission will be judged on the following criteria:
+1. Clone this repo
+2. Run the command `gem install bundle` (if you don't have bundle already)
+3. When the installation completes, run `bundle`
 
-* Tests pass
-* [Test coverage](https://github.com/makersacademy/course/blob/master/pills/test_coverage.md) is good
-* The code is elegant: every class has a clear responsibility, methods are short etc.
+Running tests
+-------------
+
+To run tests use the command `rspec`
+
+Instructions
+------------
+
+```
+2.3.0 :001 > require './lib/airport'
+ => true
+2.3.0 :002 > require './lib/plane'
+ => true
+2.3.0 :003 > airport = Airport.new(1, 25)
+ => #<Airport:0x007fb51a2a9708 @weather=1, @capacity=25, @planes=[]>
+2.3.0 :004 > plane1 = Plane.new
+ => #<Plane:0x007fb51a988c68 @flying=true>
+2.3.0 :005 > plane2 = Plane.new
+ => #<Plane:0x007fb51a2a1580 @flying=true>
+2.3.0 :006 > airport.land(plane1)
+```
