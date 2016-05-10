@@ -2,7 +2,7 @@ require 'airport'
 
 describe Airport do
   subject(:airport) { described_class.new(weather, 25) }
-  let(:plane) { double :plane }
+  let(:plane) { double :plane, land: nil, take_off: nil }
   let(:weather) { double :weather }
 
   describe '#land' do
@@ -12,7 +12,8 @@ describe Airport do
       end
 
       it 'lands a plane' do
-        expect(airport).to respond_to(:land).with(1).argument
+        expect(plane).to receive(:land)
+        airport.land(plane)
       end
 
       context 'when full' do
@@ -38,7 +39,9 @@ describe Airport do
       end
 
       it 'takes off a plane' do
-        expect(airport).to respond_to(:take_off).with(1).argument
+        airport.land(plane)
+        expect(plane).to receive(:take_off)
+        airport.take_off(plane)
       end
 
       it 'returns the plane that took off' do

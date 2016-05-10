@@ -36,7 +36,10 @@ describe 'User stories' do
     # I would like a default airport capacity that can be overridden as appropriate
     it 'airport has a default capacity' do
       default_airport = Airport.new(weather)
-      Airport::DEFAULT_CAPACITY.times { default_airport.land(plane) }
+      Airport::DEFAULT_CAPACITY.times do
+        other_plane = Plane.new
+        default_airport.land(other_plane)
+      end
       expect { default_airport.land(plane) }.to raise_error 'Plane cannot land. Airport is full!'
     end
 
@@ -44,15 +47,24 @@ describe 'User stories' do
     # So the system is consistent and correctly reports plane status and location
     # I want to ensure a flying plane cannot take off and cannot be in an airport
     it 'flying plane cannot take off' do
-      airport.land(plane)
-      flying_plane = airport.take_off(plane)
-      expect { flying_plane.take_off }.to raise_error 'Plane cannot take off. Plane already flying!'
+      expect { plane.take_off }.to raise_error 'Plane cannot take off. Plane already flying!'
     end
 
     it 'flying plane cannot be in an airport' do
+      expect { plane.airport }.to raise_error 'Plane cannot be at an airport. Plane already flying!'
+    end
+
+    # As an air traffic controller
+    # So the system is consistent and correctly reports plane status and location
+    # I want to ensure a plane that is not flying cannot land and must be in an airport
+    it 'non-flying plane cannot land' do
       airport.land(plane)
-      flying_plane = airport.take_off(plane)
-      expect { flying_plane.airport }.to raise_error 'Plane cannot be at an airport. Plane already flying!'
+      expect { plane.land(airport) }.to raise_error 'Plane cannot land. Plane already landed!'
+    end
+
+    it 'non-flying plane must be in an airport' do
+      airport.land(plane)
+      expect(plane.airport).to eq airport
     end
 
     # As an air traffic controller
@@ -61,7 +73,8 @@ describe 'User stories' do
     context 'when airport is full' do
       it 'does not allow planes to land' do
         25.times do
-          airport.land(plane)
+          other_plane = Plane.new
+          airport.land(other_plane)
         end
         expect { airport.land(plane) }.to raise_error 'Plane cannot land. Airport is full!'
       end

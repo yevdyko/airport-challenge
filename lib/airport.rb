@@ -14,12 +14,14 @@ class Airport
   def land(plane)
     raise 'Plane cannot land. Airport is full!' if full?
     raise 'Plane cannot land. Weather is stormy!' if stormy?
+    plane.land(self)
     @planes << plane
   end
 
   def take_off(plane)
     raise 'Plane cannot take off. Weather is stormy!' if stormy?
     raise 'Plane cannot take off. Wrong airport!' unless wrong_airport?(plane)
+    plane.take_off
     plane
   end
 
