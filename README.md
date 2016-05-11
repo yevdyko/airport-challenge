@@ -3,18 +3,6 @@ Airport Challenge
 
 [![Build Status](https://travis-ci.org/yevdyko/airport-challenge.svg?branch=master)](https://travis-ci.org/yevdyko/airport-challenge)  [![Coverage Status](https://coveralls.io/repos/github/yevdyko/airport-challenge/badge.svg?branch=master)](https://coveralls.io/github/yevdyko/airport-challenge?branch=master)  [![Code Climate](https://codeclimate.com/github/yevdyko/airport-challenge/badges/gpa.svg)](https://codeclimate.com/github/yevdyko/airport-challenge)
 
-```
-         ______
-         _\____\___
- =  = ==(____MA____)
-           \_____\___________________,-~~~~~~~`-.._
-           /     o o o o o o o o o o o o o o o o  |\_
-           `~-.__       __..----..__                  )
-                 `---~~\___________/------------`````
-                 =  ===(_________)
-
-```
-
 We have a request from a client to write the software to control the flow of planes at an airport. The planes can land and take off provided that the weather is sunny. Occasionally it may be stormy, in which case no planes can land or take off.  Here are the user stories that we worked out in collaboration with the client:
 
 User Stories
@@ -70,7 +58,7 @@ Approach
 --------
 
 I decided to use a separate class to implement the weather behaviour, with this
-class containing a single class method #stormy? which returned true with a
+class containing a single class method `#stormy?` which returned true with a
 probability of 5%. It has been implemented with the Kernel method rand.
 
 Setup
@@ -104,16 +92,70 @@ How to use
 
 To see the code in action, open IRB and follow the instructions:
 
-```
-2.3.0 :001 > require './lib/airport'
- => true
-2.3.0 :002 > require './lib/plane'
- => true
-2.3.0 :003 > airport = Airport.new(1, 25)
- => #<Airport:0x007fb51a2a9708 @weather=1, @capacity=25, @planes=[]>
-2.3.0 :004 > plane1 = Plane.new
- => #<Plane:0x007fb51a988c68 @flying=true>
-2.3.0 :005 > plane2 = Plane.new
- => #<Plane:0x007fb51a2a1580 @flying=true>
-2.3.0 :006 > airport.land(plane1)
-```
+1. Require the files:
+
+  ```ruby
+  2.3.0 :001 > require './lib/weather'
+   => true
+  2.3.0 :002 > require './lib/plane'
+   => true
+  2.3.0 :003 > require './lib/airport'
+   => true
+  ```
+
+2. Create a weather object:
+
+  ```ruby
+  2.3.0 :004 > weather = Weather.new
+   => #<Weather:0x007f94420bb430>
+  ```
+
+3. Create a new airport:
+
+  ```ruby
+  2.3.0 :005 > airport = Airport.new(weather)
+   => #<Airport:0x007f94420b22b8 @weather=#<Weather:0x007f94420bb430>,
+   @capacity=25, @planes=[]>
+  ```
+
+4. Create some planes:
+
+  ```ruby
+  2.3.0 :006 > plane1 = Plane.new
+   => #<Plane:0x007f94420aa1d0 @flying=true>
+  2.3.0 :007 > plane2 = Plane.new
+   => #<Plane:0x007f94420a02c0 @flying=true>
+  ```
+
+5. Land planes:
+
+  ```ruby
+  2.3.0 :008 > airport.land(plane1)
+   => [#<Plane:0x007f94420aa1d0 @flying=false, @airport=#<Airport:0x007f94420b22b8
+   @weather=#<Weather:0x007f94420bb430>, @capacity=25, @planes=[...]>>]
+  2.3.0 :009 > airport.land(plane2)
+   => [#<Plane:0x007f94420aa1d0 @flying=false, @airport=#<Airport:0x007f94420b22b8
+   @weather=#<Weather:0x007f94420bb430>, @capacity=25, @planes=[...]>>,
+   #<Plane:0x007f94420a02c0 @flying=false, @airport=#<Airport:0x007f94420b22b8
+   @weather=#<Weather:0x007f94420bb430>, @capacity=25, @planes=[...]>>]
+  ```
+
+  If the weather is stormy, you may need to try landing the plane a few times.
+
+6. Send a plane to take off:
+
+  ```ruby
+  2.3.0 :010 > airport.take_off(plane2)
+   => #<Plane:0x007f94420a02c0 @flying=false, @airport=#<Airport:0x007f94420b22b8
+   @weather=#<Weather:0x007f94420bb430>, @capacity=25, @planes=[#<Plane:0x007f94420aa1d0
+   @flying=false, @airport=#<Airport:0x007f94420b22b8 ...>>,
+   #<Plane:0x007f9442098890 @flying=false, @airport=#<Airport:0x007f94420b22b8 ...>>]>>
+  ```
+
+7. Check the planes in the airport:
+
+  ```ruby
+  2.3.0 :011 > airport.planes
+   => [#<Plane:0x007f94420aa1d0 @flying=false, @airport=#<Airport:0x007f94420b22b8
+   @weather=#<Weather:0x007f94420bb430>, @capacity=25, @planes=[...]>>]
+  ```
