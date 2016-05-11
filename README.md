@@ -1,5 +1,7 @@
-Airport Challenge [![Build Status](https://travis-ci.org/yevdyko/airport-challenge.svg?branch=master)](https://travis-ci.org/yevdyko/airport-challenge)  [![Coverage Status](https://coveralls.io/repos/github/yevdyko/airport-challenge/badge.svg?branch=master)](https://coveralls.io/github/yevdyko/airport-challenge?branch=master)  [![Code Climate](https://codeclimate.com/github/yevdyko/airport-challenge/badges/gpa.svg)](https://codeclimate.com/github/yevdyko/airport-challenge)
+Airport Challenge
 =================
+
+[![Build Status](https://travis-ci.org/yevdyko/airport-challenge.svg?branch=master)](https://travis-ci.org/yevdyko/airport-challenge)  [![Coverage Status](https://coveralls.io/repos/github/yevdyko/airport-challenge/badge.svg?branch=master)](https://coveralls.io/github/yevdyko/airport-challenge?branch=master)  [![Code Climate](https://codeclimate.com/github/yevdyko/airport-challenge/badges/gpa.svg)](https://codeclimate.com/github/yevdyko/airport-challenge)
 
 ```
          ______
@@ -56,31 +58,51 @@ So the system is consistent and correctly reports plane status and location
 I want to ensure a plane that has taken off from an airport is no longer in that airport
 ```
 
-Here is User Stories converted into a Domain Model
+Here are the User Stories converted into a Domain Model:
 
-|Object  |      Messages      |
-|--------|--------------------|
-|airport |      land          |
-|        |      take_off      |
-|plane   |      land          |
-|        |      take_off      |
-|        |      airport       |
-|weather |      stormy?       |
+| Object  |  Messages  | Object | Messages | Object  | Messages |
+|---------|------------|--------|----------|---------|----------|
+| airport |  land      | plane  | land     | weather |  stormy? |
+|         |  take_off  |        | take_off |         |          |
+|         |            |        | airport  |         |          |
 
-Installation
-------------
+Approach
+--------
 
-1. Clone this repo
-2. Run the command `gem install bundle` (if you don't have bundle already)
-3. When the installation completes, run `bundle`
+I decided to use a separate class to implement the weather behaviour, with this
+class containing a single class method #stormy? which returned true with a
+probability of 5%. It has been implemented with the Kernel method rand.
 
-Running tests
--------------
+Setup
+-----
 
-To run tests use the command `rspec`
+1. Clone the repository:
 
-Instructions
-------------
+  `$ git clone git@github.com:yevdyko/airport-challenge.git`
+
+2. Change into the directory:
+
+  `$ cd airport-challenge`
+
+3. If you don't have bundle already, run the command:
+
+  `$ gem install bundle`
+
+4. Install all dependencies with:
+
+  `$ bundle`
+
+Testing
+-------
+
+To run the tests:
+
+  `$ rspec`
+
+How to use
+----------
+
+To see the code in action, open IRB and follow the instructions:
 
 ```
 2.3.0 :001 > require './lib/airport'
