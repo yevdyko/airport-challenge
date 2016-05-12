@@ -46,7 +46,7 @@ So the system is consistent and correctly reports plane status and location
 I want to ensure a plane that has taken off from an airport is no longer in that airport
 ```
 
-Here are the User Stories converted into a Domain Model:
+Here are the user stories converted into a Domain Model:
 
 | Object  |  Messages  | Object | Messages | Object  | Messages |
 |---------|------------|--------|----------|---------|----------|
@@ -57,105 +57,101 @@ Here are the User Stories converted into a Domain Model:
 Approach
 --------
 
-I decided to use a separate class to implement the weather behaviour, with this
-class containing a single class method `#stormy?` which returned true with a
-probability of 5%. It has been implemented with the Kernel method rand.
+My approach to solving this challenge was to start with an Airport class, build it as much as I could until I needed to start understanding how one class object would interact with another one. At some point I found it's better to extract the weather behaviour into a separate class, with this class containing a single method `#stormy?` which returned true with a probability of 5%. It has been implemented with the Kernel method `rand`.
 
-Setup
------
+Installation
+------------
 
-1. Clone the repository:
+Clone the repository:
 
-  `$ git clone git@github.com:yevdyko/airport-challenge.git`
+    $ git clone git@github.com:yevdyko/airport-challenge.git
 
-2. Change into the directory:
+Change into the directory:
 
-  `$ cd airport-challenge`
+    $ cd airport-challenge
 
-3. If you don't have bundle already, run the command:
+If you don't have bundle already, run the command:
 
-  `$ gem install bundle`
+    $ gem install bundle
 
-4. Install all dependencies with:
+Install all dependencies with:
 
-  `$ bundle`
+    $ bundle
 
 Testing
 -------
 
 To run the tests:
 
-  `$ rspec`
+    $ rspec
 
 How to use
 ----------
 
-To see the code in action, open IRB and follow the instructions:
+To see the code in action, open IRB and require the files:
 
-1. Require the files:
+```
+2.3.0 :001 > require './lib/weather'
+ => true
+2.3.0 :002 > require './lib/plane'
+ => true
+2.3.0 :003 > require './lib/airport'
+ => true
+```
 
-  ```ruby
-  2.3.0 :001 > require './lib/weather'
-   => true
-  2.3.0 :002 > require './lib/plane'
-   => true
-  2.3.0 :003 > require './lib/airport'
-   => true
-  ```
+Create a weather object:
 
-2. Create a weather object:
+```
+2.3.0 :004 > weather = Weather.new
+ => #<Weather:0x007f94420bb430>
+```
 
-  ```ruby
-  2.3.0 :004 > weather = Weather.new
-   => #<Weather:0x007f94420bb430>
-  ```
+Create a new airport:
 
-3. Create a new airport:
+```
+2.3.0 :005 > airport = Airport.new(weather)
+ => #<Airport:0x007f94420b22b8 @weather=#<Weather:0x007f94420bb430>,
+ @capacity=25, @planes=[]>
+```
 
-  ```ruby
-  2.3.0 :005 > airport = Airport.new(weather)
-   => #<Airport:0x007f94420b22b8 @weather=#<Weather:0x007f94420bb430>,
-   @capacity=25, @planes=[]>
-  ```
+Create some planes:
 
-4. Create some planes:
+```
+2.3.0 :006 > plane1 = Plane.new
+ => #<Plane:0x007f94420aa1d0 @flying=true>
+2.3.0 :007 > plane2 = Plane.new
+ => #<Plane:0x007f94420a02c0 @flying=true>
+```
 
-  ```ruby
-  2.3.0 :006 > plane1 = Plane.new
-   => #<Plane:0x007f94420aa1d0 @flying=true>
-  2.3.0 :007 > plane2 = Plane.new
-   => #<Plane:0x007f94420a02c0 @flying=true>
-  ```
+Land planes:
 
-5. Land planes:
+```
+2.3.0 :008 > airport.land(plane1)
+ => [#<Plane:0x007f94420aa1d0 @flying=false, @airport=#<Airport:0x007f94420b22b8
+ @weather=#<Weather:0x007f94420bb430>, @capacity=25, @planes=[...]>>]
+2.3.0 :009 > airport.land(plane2)
+ => [#<Plane:0x007f94420aa1d0 @flying=false, @airport=#<Airport:0x007f94420b22b8
+ @weather=#<Weather:0x007f94420bb430>, @capacity=25, @planes=[...]>>,
+ #<Plane:0x007f94420a02c0 @flying=false, @airport=#<Airport:0x007f94420b22b8
+ @weather=#<Weather:0x007f94420bb430>, @capacity=25, @planes=[...]>>]
+```
 
-  ```ruby
-  2.3.0 :008 > airport.land(plane1)
-   => [#<Plane:0x007f94420aa1d0 @flying=false, @airport=#<Airport:0x007f94420b22b8
-   @weather=#<Weather:0x007f94420bb430>, @capacity=25, @planes=[...]>>]
-  2.3.0 :009 > airport.land(plane2)
-   => [#<Plane:0x007f94420aa1d0 @flying=false, @airport=#<Airport:0x007f94420b22b8
-   @weather=#<Weather:0x007f94420bb430>, @capacity=25, @planes=[...]>>,
-   #<Plane:0x007f94420a02c0 @flying=false, @airport=#<Airport:0x007f94420b22b8
-   @weather=#<Weather:0x007f94420bb430>, @capacity=25, @planes=[...]>>]
-  ```
+If the weather is stormy, you may need to try landing the plane a few times.
 
-  If the weather is stormy, you may need to try landing the plane a few times.
+Send a plane to take off:
 
-6. Send a plane to take off:
+```
+2.3.0 :010 > airport.take_off(plane2)
+ => #<Plane:0x007f94420a02c0 @flying=false, @airport=#<Airport:0x007f94420b22b8
+ @weather=#<Weather:0x007f94420bb430>, @capacity=25,
+ @planes=[#<Plane:0x007f94420aa1d0 @flying=false, @airport=#<Airport:0x007f94420b22b8 ...>>,
+ #<Plane:0x007f9442098890 @flying=false, @airport=#<Airport:0x007f94420b22b8 ...>>]>>
+```
 
-  ```ruby
-  2.3.0 :010 > airport.take_off(plane2)
-   => #<Plane:0x007f94420a02c0 @flying=false, @airport=#<Airport:0x007f94420b22b8
-   @weather=#<Weather:0x007f94420bb430>, @capacity=25, @planes=[#<Plane:0x007f94420aa1d0
-   @flying=false, @airport=#<Airport:0x007f94420b22b8 ...>>,
-   #<Plane:0x007f9442098890 @flying=false, @airport=#<Airport:0x007f94420b22b8 ...>>]>>
-  ```
+Check the planes in the airport:
 
-7. Check the planes in the airport:
-
-  ```ruby
-  2.3.0 :011 > airport.planes
-   => [#<Plane:0x007f94420aa1d0 @flying=false, @airport=#<Airport:0x007f94420b22b8
-   @weather=#<Weather:0x007f94420bb430>, @capacity=25, @planes=[...]>>]
-  ```
+```
+2.3.0 :011 > airport.planes
+ => [#<Plane:0x007f94420aa1d0 @flying=false, @airport=#<Airport:0x007f94420b22b8
+ @weather=#<Weather:0x007f94420bb430>, @capacity=25, @planes=[...]>>]
+```
