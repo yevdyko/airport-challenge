@@ -1,4 +1,6 @@
-script: bundle exec rspec spec
 language: ruby
 rvm:
-  - 2.3.0
+  - 2.3.1
+
+script:
+  - CODECLIMATE_REPO_TOKEN=$CODECLIMATE_REPO_TOKEN bundle exec rspec spec
